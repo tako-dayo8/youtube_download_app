@@ -1,0 +1,35 @@
+{
+    "name": "youtube_download_api",
+    "version": "1.0.0-beta",
+    "description": "this package is YouTube download API",
+    "main": "src/index.ts",
+    "type": "module",
+    "scripts": {
+        "start": "node build/index.js && node build/core.js",
+        "build": "node build.js",
+        "dev": "nodemon typescript/index.ts",
+        "remove": "node build/fileRemove.js"
+    },
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "@types/archiver": "^6.0.2",
+        "@types/cors": "^2.8.17",
+        "@types/express": "^4.17.21",
+        "@types/node": "^20.14.11",
+        "@types/node-cron": "^3.0.11",
+        "glob": "^11.0.0",
+        "nodemon": "^3.1.4",
+        "rimraf": "^6.0.1",
+        "typescript": "^5.5.3",
+        "uglify-js": "^3.19.0"
+    },
+    "dependencies": {
+        "archiver": "^7.0.1",
+        "cors": "^2.8.5",
+        "express": "^4.19.2",
+        "mysql2": "^3.10.3",
+        "node-cron": "^3.0.3",
+        "ytdl-core": "^4.11.5"
+    }
+}

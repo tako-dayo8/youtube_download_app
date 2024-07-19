@@ -1,0 +1,45 @@
+version: '3.8'
+services:
+    web:
+        build: ./web
+        image: yt_dl_app/web:latst
+        container_name: web
+        depends_on:
+            - api
+        ports:
+            - 3000:3000
+    api:
+        build: ./api
+        image: yt_dl_app/api:latst
+        container_name: api
+        cpus: 0.7
+        environment:
+            MYSQL_HOST: ${MYSQL_HOST}
+            MYSQL_DATABASE: ${MYSQL_DATABASE}
+            MYSQL_USER: ${MYSQL_USER}
+            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+            MYSQL_TCP_PORT: ${MYSQL_TCP_PORT}
+        volumes:
+            - ./api/audios:/api/audios:rw
+            - ./api/logs:/api/logs:rw
+            - ./api/logs_ald:/api/logs_ald:rw
+        depends_on:
+            - db
+        ports:
+            - 4000:4000
+    db:
+        build: ./db
+        image: yt_dl_app/db:latst
+        container_name: db
+        environment:
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+            MYSQL_DATABASE: ${MYSQL_DATABASE}
+            MYSQL_ROOT_HOST: ${MYSQL_ROOT_HOST}
+            MYSQL_USER: ${MYSQL_USER}
+            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+            MYSQL_TCP_PORT: ${MYSQL_TCP_PORT}
+        volumes:
+            - ./db/sql:/var/lib/mysql
+            - ./db/log:/var/log/mysql
+        ports:
+            - 6000:6000

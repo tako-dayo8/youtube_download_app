@@ -1,0 +1,13 @@
+USE yt_dl_app;
+
+CREATE TABLE IF NOT EXISTS files (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name TEXT NOT NULL,
+    existences BOOLEAN NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS times (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    download_at TIMESTAMP NOT NULL,
+    remove_at TIMESTAMP NOT NULL
+);

@@ -1,0 +1,6 @@
+{
+    "watch": ["./typescript" , "./python"],
+    "ext": "ts",
+    "delay": "3",
+    "exec": "tsx"
+}

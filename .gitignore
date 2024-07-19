@@ -1,0 +1,8 @@
+.env
+api/audios
+api/logs
+api/logs_ald
+db/log
+db/sql
+
+**/node_modules

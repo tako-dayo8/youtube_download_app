@@ -1,0 +1,117 @@
+.Text_Box {
+    width: 35vw;
+    height: 6vh;
+    background-color: #d4d4d4;
+    font-size: 1.5vw;
+    padding-left: 5px;
+    margin-top: var(--margin-top);
+}
+
+.Text_Box::placeholder {
+    color: rgba(0, 0, 0, 0.582);
+}
+
+.Button {
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    background-color: red;
+    color: white;
+    width: 20vw;
+    height: 6vh;
+    font-size: 2vw;
+    margin-top: var(--margin-top);
+    border-radius: 10px;
+}
+
+.Button:hover {
+    background-color: #ff000080;
+}
+
+.res_Title {
+    font-size: 4vw;
+    margin-top: 5vh;
+    margin-bottom: 5vh;
+}
+
+.ress {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.res_P {
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    font-size: 2vw;
+    margin-right: 20px;
+    width: 40vw;
+    height: 5vw;
+}
+
+.backButton {
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    width: 10vw;
+    height: 6vh;
+    font-size: 2vw;
+    margin-top: 5vh;
+    border-radius: 10px;
+    background-color: red;
+    color: white;
+}
+
+.backButton:hover {
+    background-color: #ff000080;
+}
+
+@media screen and (max-width: 768px) {
+    .Text_Box {
+        width: 60%;
+        height: 6vh;
+        font-size: 2vw;
+        padding-left: 5px;
+    }
+
+    .Button {
+        width: 35%;
+        height: 6vh;
+        font-size: 2.5vw;
+        text-align: center;
+    }
+
+    .res_Title {
+        font-size: 6vw;
+    }
+
+    .res_P {
+        font-size: 2.5vw;
+        width: 40vw;
+        height: 7vw;
+    }
+
+    .backButton {
+        width: 15vw;
+        height: 5vh;
+        font-size: 2.5vw;
+    }
+}
+
+@media screen and (max-width: 425px) {
+    .Text_Box {
+        width: 70%;
+        height: 5vh;
+        font-size: 3vw;
+        padding-left: 5px;
+    }
+
+    .Button {
+        width: 40%;
+        height: 5vh;
+        font-size: 3vw;
+        text-align: center;
+        margin-top: 30px;
+    }
+}

@@ -1,0 +1,44 @@
+version: '3.9'
+services:
+    web:
+        build: ./web
+        image: web:dev
+        container_name: web
+        tty: true # debug
+        depends_on:
+            - api
+        ports:
+            - 3000:3000
+        volumes:
+            - ./web/next:/web:rw # debug
+    api:
+        build: ./api
+        image: api:dev
+        container_name: api
+        tty: true # debug
+        cpus: 0.7
+        environment:
+            MYSQL_HOST: ${MYSQL_HOST}
+            MYSQL_DATABASE: ${MYSQL_DATABASE}
+            MYSQL_USER: ${MYSQL_USER}
+            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+            MYSQL_TCP_PORT: ${MYSQL_TCP_PORT}
+        volumes:
+            - ./api/node:/api:rw # debug
+        depends_on:
+            - db
+        ports:
+            - 4000:4000
+    db:
+        build: ./db
+        image: db:dev
+        container_name: db
+        environment:
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+            MYSQL_DATABASE: ${MYSQL_DATABASE}
+            MYSQL_ROOT_HOST: ${MYSQL_ROOT_HOST}
+            MYSQL_USER: ${MYSQL_USER}
+            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+            MYSQL_TCP_PORT: ${MYSQL_TCP_PORT}
+        ports:
+            - 6000:6000
