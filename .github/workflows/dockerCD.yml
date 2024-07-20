@@ -11,19 +11,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
         - name: SSH Conect
-          uses: LuisEnMarroquin/setup-ssh-action@v2.0.0
+          uses: appleboy/ssh-action@1.0.3
           with:
-            # SSH origin
-            ORIGIN: ${{ secrets.SERVER_HOST }}
-            # SSH key
-            SSHKEY: ${{ secrets.SSH_KEY }}
-            # SSH host
-            NAME: server
-            # SSH port
-            PORT: ${{ secrets.SSH_PORT }}
-            # SSH user
-            USER: ${{ secrets.SSH_USER }}
-        
-        - name: Image Pull
-          run: |
-            ssh server ls --help
+            key:  ${{ secrets.SSH_KEY }}
+            host: ${{ secrets.SERVER_HOST }}
+            username: ${{ secrets.SSH_USER }}
+            port: ${{ secrets.SSH_PORT }}
+            script: |
+              ls --help
