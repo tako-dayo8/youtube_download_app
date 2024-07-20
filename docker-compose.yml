@@ -14,6 +14,7 @@ services:
         container_name: api
         cpus: 0.7
         environment:
+            NODE_ENV: ${NODE_ENV}
             MYSQL_HOST: ${MYSQL_HOST}
             MYSQL_DATABASE: ${MYSQL_DATABASE}
             MYSQL_USER: ${MYSQL_USER}
@@ -32,6 +33,7 @@ services:
         image: ${SERVER_HOST}/db:latest
         container_name: db
         environment:
+            NODE_ENV: ${NODE_ENV}
             MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
             MYSQL_DATABASE: ${MYSQL_DATABASE}
             MYSQL_ROOT_HOST: ${MYSQL_ROOT_HOST}
