@@ -1,7 +1,10 @@
 .env
 api/audios
+api/**/audios
 api/logs
+api/**/logs
 api/logs_ald
+api/**/logs_ald
 db/log
 db/sql
 
