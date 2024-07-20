@@ -1,4 +1,4 @@
-name: docker-compose CI CD
+name: docker-compose CI
 
 on:
   workflow_dispatch:
@@ -30,25 +30,6 @@ jobs:
         shell: bash
         run: |
           docker-compose -f docker-compose.yml push
-          
-  ssh_pull:
-    runs-on: ubuntu-latest
-    needs: [ build_push ]
-    steps:
-        - name: SSH Conect
-          uses: LuisEnMarroquin/setup-ssh-action@v2.0.0
-          with:
-            # SSH origin
-            ORIGIN: ${{ secrets.SERVER_HOST }}
-            # SSH key
-            SSHKEY: ${{ secrets.SSH_KEY }}
-            # SSH host
-            NAME: server
-            # SSH port
-            PORT: ${{ secrets.SSH_PORT }}
-            # SSH user
-            USER: ${{ secrets.SSH_USER }}
-
-        - name: image pull
-          run: |
+      - name: image pull
+        run: |
             ssh server ls --help
