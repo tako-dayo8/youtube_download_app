@@ -4,8 +4,7 @@ on:
   workflow_dispatch:
   workflow_run:
     workflows: [ docker-compose CI ]
-    types:
-      - completed
+    types: [ completed ] 
 
 jobs:
   ssh_pull:
@@ -24,3 +23,7 @@ jobs:
             PORT: ${{ secrets.SSH_PORT }}
             # SSH user
             USER: ${{ secrets.SSH_USER }}
+        
+        - name: Image Pull
+          run: |
+            ssh server ls --help
