@@ -16,16 +16,15 @@ app.use(cors());
 //jsonをuse
 app.use(express.json());
 
-const db = new database() 
+const db = new database();
 
-
-app.use("/" , (req: Request , res: Response , next: NextFunction) => {
-    if (req.method != "GET") {
+app.use('/', (req: Request, res: Response, next: NextFunction) => {
+    if (req.method != 'GET') {
         next();
         return;
     }
 
-    if (!(req.url == "/" || req.url.startsWith("/audios") || req.url.startsWith("/videos"))){
+    if (!(req.url == '/' || req.url.startsWith('/audios') || req.url.startsWith('/videos'))) {
         log.Tarminal('INFO', '-----------------GET-----------------');
 
         res.status(404).json({ status: 404, error: 'No Root found' });
@@ -37,7 +36,7 @@ app.use("/" , (req: Request , res: Response , next: NextFunction) => {
         next();
         return;
     }
-})
+});
 
 // Hello world
 app.get('/', (req: Request, res: Response) => {
@@ -51,8 +50,8 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 // Get audios
-app.use("/audios", (req: Request, res: Response , next : NextFunction) => {
-    if (req.method != "GET") { 
+app.use('/audios', (req: Request, res: Response, next: NextFunction) => {
+    if (req.method != 'GET') {
         log.Tarminal('INFO', '-----------------POST-----------------');
 
         res.status(404).json({ status: 404, error: 'No Root found' });
@@ -113,11 +112,10 @@ app.use("/audios", (req: Request, res: Response , next : NextFunction) => {
     log.Reqest('INFO', req.method, 200, ip, 'success' + `url : ${url}`);
 
     log.Tarminal('INFO', '-------------------------------------');
-})
-
+});
 
 //保存先url
-const audio_url = `https://api.mcakh-studio.site/audios/`;
+const audio_url = process.env.NODE_ENV == 'production' ? ' https://api.mcakh-studio.site/audios/' : 'http://localhost:4000/audios/';
 
 app.post('/', async (req: Request, res: Response) => {
     log.Tarminal('INFO', '-----------------POST-----------------');
@@ -129,7 +127,6 @@ app.post('/', async (req: Request, res: Response) => {
 
     //送られたURLを取得
     const req_url: string = req.body.url;
-
 
     //urlがundefinedの場合失敗リクエストを返す
     if (req_url == undefined) {
@@ -170,7 +167,7 @@ app.post('/', async (req: Request, res: Response) => {
     //動画の詳細情報を取得
     const video_info = await ytdl.getBasicInfo(req_url, { lang: 'ja' });
 
-    const video_title = video_info.videoDetails.title.replace("/" , "-");
+    const video_title = video_info.videoDetails.title.replace('/', '-').replace(/\s+/g, '');
 
     //動画の詳細情報を表示
     log.Tarminal('INFO', `Video Title : ${video_title}`);
@@ -203,7 +200,7 @@ app.post('/', async (req: Request, res: Response) => {
     }, 1);
 
     log.Tarminal('INFO', `-----------------Python-----------------`);
-    const run = spawn('/bin/python3', ['/api/python/download.py', req_url , video_title]);
+    const run = spawn('/bin/python3', ['/api/python/download.py', req_url, video_title]);
 
     run.stdout.on('data', (data) => {
         log.Tarminal('INFO', `${data.toString().replace(/\n/g, '')}`);
@@ -259,7 +256,6 @@ app.listen(port, () => {
 async function removeFile(title: string): Promise<void> {
     let removed = false;
 
-
     fs.readdirSync('./audios').forEach(async (file) => {
         if (file.includes(title)) {
             fs.unlinkSync(`./audios/${file}`);
@@ -273,11 +269,6 @@ async function removeFile(title: string): Promise<void> {
     });
 }
 
-function toMysqlFormat(date : Date) : string {
-    return date.getFullYear() + "-" +
-        ("0" + (date.getMonth() + 1)).slice(-2) + "-" +
-        ("0" + date.getDate()).slice(-2) + " " +
-        ("0" + date.getHours()).slice(-2) + ":" +
-        ("0" + date.getMinutes()).slice(-2) + ":" +
-        ("0" + date.getSeconds()).slice(-2);
+function toMysqlFormat(date: Date): string {
+    return date.getFullYear() + '-' + ('0' + (date.getMonth() + 1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2) + ' ' + ('0' + date.getHours()).slice(-2) + ':' + ('0' + date.getMinutes()).slice(-2) + ':' + ('0' + date.getSeconds()).slice(-2);
 }
