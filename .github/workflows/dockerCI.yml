@@ -12,6 +12,8 @@ jobs:
     env:
         NODE_ENV: production
         SERVER_HOST: ${{ secrets.SERVER_HOST }}
+        MYSQL_ROOT_PASSWORD : ${{ secrets.MYSQL_ROOT_PASSWORD }}
+        MYSQL_ROOT_HOST: ${{ secrets.MYSQL_ROOT_HOST }}
         MYSQL_HOST: ${{ secrets.MYSQL_HOST }}
         MYSQL_DATABASE: ${{ secrets.MYSQL_DATABASE }}
         MYSQL_USER: ${{ secrets.MYSQL_USER }}
