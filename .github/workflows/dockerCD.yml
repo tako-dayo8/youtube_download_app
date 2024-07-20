@@ -19,4 +19,5 @@ jobs:
             username: ${{ secrets.SSH_USER }}
             port: ${{ secrets.SSH_PORT }}
             script: |
+              cd ${{ secrets.TARGET_DIR }}
               sudo docker-compose -f docker-compose.server.yml pull
