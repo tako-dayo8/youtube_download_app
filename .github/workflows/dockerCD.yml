@@ -20,5 +20,5 @@ jobs:
             port: ${{ secrets.SSH_PORT }}
             script: |
               cd ${{ secrets.TARGET_DIR }}
-              sudo docker-compose -f docker-compose.server.yml down --rmi all --volumes　--remove-orphans
+              sudo docker-compose -f docker-compose.server.yml down --rmi all --volumes --remove-orphans
               sudo docker-compose -f docker-compose.server.yml up -d
