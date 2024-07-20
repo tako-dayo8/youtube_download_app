@@ -9,33 +9,43 @@ on:
 jobs:
   build_push:
     runs-on: ubuntu-latest
+    env:
+        SERVER_HOST: ${{ secrets.SERVER_HOST }}
+        MYSQL_HOST: ${{ secrets.MYSQL_HOST }}
+        MYSQL_DATABASE: ${{ secrets.MYSQL_DATABASE }}
+        MYSQL_USER: ${{ secrets.MYSQL_USER }}
+        MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+        MYSQL_TCP_PORT: ${{ secrets.MYSQL_TCP_PORT }}
+        WEB_PORT: ${{ secrets.WEB_PORT }}
+        API_PORT: ${{ secrets.API_PORT }}
     steps:
       - uses: actions/checkout@v4
 
       - name: compose build
         shell: bash
-        env:
-            SERVER_HOST: ${{ secrets.SERVER_HOST }}
-            MYSQL_HOST: ${{ secrets.MYSQL_HOST }}
-            MYSQL_DATABASE: ${{ secrets.MYSQL_DATABASE }}
-            MYSQL_USER: ${{ secrets.MYSQL_USER }}
-            MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
-            MYSQL_TCP_PORT: ${{ secrets.MYSQL_TCP_PORT }}
-            WEB_PORT: ${{ secrets.WEB_PORT }}
-            API_PORT: ${{ secrets.API_PORT }}
         run: |
           docker-compose -f docker-compose.yml build
 
       - name: compose push
         shell: bash
-        env:
-            SERVER_HOST: ${{ secrets.SERVER_HOST }}
-            MYSQL_HOST: ${{ secrets.MYSQL_HOST }}
-            MYSQL_DATABASE: ${{ secrets.MYSQL_DATABASE }}
-            MYSQL_USER: ${{ secrets.MYSQL_USER }}
-            MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
-            MYSQL_TCP_PORT: ${{ secrets.MYSQL_TCP_PORT }}
-            WEB_PORT: ${{ secrets.WEB_PORT }}
-            API_PORT: ${{ secrets.API_PORT }}
         run: |
           docker-compose -f docker-compose.yml push
+          
+  ssh_pull:
+    runs-on: ubuntu-latest
+    steps:
+        - name: SSH Conect
+          uses: LuisEnMarroquin/setup-ssh-action@v2.0.0
+          with:
+            # SSH origin
+            ORIGIN: ${{ secrets.SERVER_HOST }}
+            # SSH key
+            SSHKEY: ${{ secrets.SSH_KEY }}
+            # SSH port
+            PORT: ${{ secrets.SSH_PORT }}
+            # SSH user
+            USER: ${{ secrets.SSH_USER }}
+
+        - name: image pull
+          run: |
+            ssh production ls --help
