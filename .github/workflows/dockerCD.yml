@@ -22,4 +22,5 @@ jobs:
               cd ${{ secrets.TARGET_DIR }}
               sudo docker-compose -f docker-compose.server.yml down --rmi all --volumes
               sudo docker-compose -f docker-compose.server.yml pull
-              sudo systemctl restart ${{ secrets.SERVICE }}
+              sudo docker-compose -f docker-compose.server.yml up -d
+              sudo docker-compose -f docker-compose.server.yml ps
