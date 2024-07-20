@@ -1,7 +1,9 @@
 version: '3.9'
 services:
     web:
-        build: ./web
+        build:
+            context: ./web
+            dockerfile: ./Dockerfile.dev
         image: web:dev
         container_name: web
         tty: true # debug
@@ -12,7 +14,9 @@ services:
         volumes:
             - ./web/next:/web:rw # debug
     api:
-        build: ./api
+        build:
+            context: ./api
+            dockerfile: ./Dockerfile.dev
         image: api:dev
         container_name: api
         tty: true # debug
@@ -31,16 +35,18 @@ services:
         ports:
             - ${API_PORT}:${API_PORT}
     db:
-        build: ./db
-        image: db:dev
+        image: mysql:9.0.0
         container_name: db
         environment:
-            NODE_ENV: ${NODE_ENV}
+            TZ: Asia/Tokyo
             MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
             MYSQL_DATABASE: ${MYSQL_DATABASE}
             MYSQL_ROOT_HOST: ${MYSQL_ROOT_HOST}
             MYSQL_USER: ${MYSQL_USER}
             MYSQL_PASSWORD: ${MYSQL_PASSWORD}
             MYSQL_TCP_PORT: ${MYSQL_TCP_PORT}
+        volumes:
+            - ./db/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+            - ./db/conf.d:/etc/mysql/conf.d
         ports:
             - ${MYSQL_TCP_PORT}:${MYSQL_TCP_PORT}

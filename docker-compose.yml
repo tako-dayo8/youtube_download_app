@@ -4,6 +4,8 @@ services:
         build: ./web
         image: ${SERVER_HOST}/web:latest
         container_name: web
+        environment:
+            NODE_ENV: ${NODE_ENV}
         depends_on:
             - api
         ports:
@@ -29,11 +31,10 @@ services:
         ports:
             - ${API_PORT}:${API_PORT}
     db:
-        build: ./db
-        image: ${SERVER_HOST}/db:latest
+        image: mysql:9.0.0
         container_name: db
         environment:
-            NODE_ENV: ${NODE_ENV}
+            TZ: Asia/Tokyo
             MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
             MYSQL_DATABASE: ${MYSQL_DATABASE}
             MYSQL_ROOT_HOST: ${MYSQL_ROOT_HOST}
@@ -43,5 +44,7 @@ services:
         volumes:
             - ./db/sql:/var/lib/mysql
             - ./db/log:/var/log/mysql
+            - ./db/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+            - ./db/conf.d:/etc/mysql/conf.d
         ports:
             - ${MYSQL_TCP_PORT}:${MYSQL_TCP_PORT}
