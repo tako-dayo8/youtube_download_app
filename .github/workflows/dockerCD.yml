@@ -21,5 +21,4 @@ jobs:
             script: |
               cd ${{ secrets.TARGET_DIR }}
               sudo docker-compose -f docker-compose.server.yml down --rmi all --volumes
-              sudo docker-compose -f docker-compose.server.yml pull
               sudo docker-compose -f docker-compose.server.yml up -d
