@@ -10,6 +10,7 @@ jobs:
   build_push:
     runs-on: ubuntu-latest
     env:
+        NODE_ENV: production
         SERVER_HOST: ${{ secrets.SERVER_HOST }}
         MYSQL_HOST: ${{ secrets.MYSQL_HOST }}
         MYSQL_DATABASE: ${{ secrets.MYSQL_DATABASE }}
