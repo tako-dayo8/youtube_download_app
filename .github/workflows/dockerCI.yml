@@ -31,6 +31,3 @@ jobs:
         shell: bash
         run: |
           docker-compose -f docker-compose.yml push
-      - name: image pull
-        run: |
-            ssh server ls --help
