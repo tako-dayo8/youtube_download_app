@@ -20,4 +20,5 @@ jobs:
             port: ${{ secrets.SSH_PORT }}
             script: |
               cd ${{ secrets.TARGET_DIR }}
+              sudo docker-compose down --rmi all --volumes
               sudo systemctl restart ${{ secrets.SERVICE }}
