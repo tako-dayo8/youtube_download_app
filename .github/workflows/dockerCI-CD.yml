@@ -1,0 +1,32 @@
+name: docker-compose CI CD
+
+on:
+  workflow_dispatch:
+  pull_request:
+      branches: [ main ] 
+      types : [synchronize]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: compose build
+        shell: bash
+        env:
+            SERVER_HOST: ${{ secrets.SERVER_HOST }}
+            MYSQL_HOST: ${{ secrets.MYSQL_HOST }}
+            MYSQL_DATABASE: ${{ secrets.MYSQL_DATABASE }}
+            MYSQL_USER: ${{ secrets.MYSQL_USER }}
+            MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+            MYSQL_TCP_PORT: ${{ secrets.MYSQL_TCP_PORT }}
+            WEB_PORT: ${{ secrets.WEB_PORT }}
+            API_PORT: ${{ secrets.API_PORT }}
+        run: |
+          docker-compose -f docker-compose.yml build
+
+      - name: compose push
+        shell: bash
+        run: |
+          docker-compose -f docker-compose.yml psuh
