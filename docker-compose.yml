@@ -42,9 +42,9 @@ services:
             MYSQL_PASSWORD: ${MYSQL_PASSWORD}
             MYSQL_TCP_PORT: ${MYSQL_TCP_PORT}
         volumes:
-            - ./db/sql:/var/lib/mysql
-            - ./db/log:/var/log/mysql
-            - ./db/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
-            - ./db/conf.d:/etc/mysql/conf.d
+            - ./db/sql:/var/lib/mysql:rw
+            - ./db/log:/var/log/mysql:rw
+            - ./db/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d:ro
+            - ./db/conf.d:/etc/mysql/conf.d:ro
         ports:
             - ${MYSQL_TCP_PORT}:${MYSQL_TCP_PORT}
