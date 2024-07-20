@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
         - name: SSH Conect
-          uses: appleboy/ssh-action@1.0.3
+          uses: appleboy/ssh-action@v1.0.3
           with:
             key:  ${{ secrets.SSH_KEY }}
             host: ${{ secrets.SERVER_HOST }}
