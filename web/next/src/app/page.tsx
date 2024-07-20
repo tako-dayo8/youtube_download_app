@@ -19,8 +19,7 @@ export default function Home(): JSX.Element {
             alert('URLを入力してください');
             return;
         } else {
-            //const url = 'https://api.mcakh-studio.site';
-            const url = 'http://localhost:4000';
+            const url = process.env.NODE_ENV == 'production' ? ' https://api.mcakh-studio.site' : 'http://localhost:4000';
             const requestBody = JSON.stringify({ url: ref.current.value });
 
             setIsLoading(true);
@@ -51,7 +50,6 @@ export default function Home(): JSX.Element {
         }
     };
 
-
     const CopyElement_MP3 = async () => {
         await navigator.clipboard.writeText(URL_MP3);
         alert('コピーしました');
@@ -61,7 +59,7 @@ export default function Home(): JSX.Element {
         if (Input) {
             return (
                 <>
-                    <input className={styles.Text_Box} type="text" placeholder="Input YouTube URL..." ref={ref} />
+                    <input className={styles.Text_Box} type='text' placeholder='Input YouTube URL...' ref={ref} />
                     <button className={styles.Button} onClick={getDwoloadURL}>
                         make download url
                     </button>
@@ -72,12 +70,12 @@ export default function Home(): JSX.Element {
                 <>
                     <h2 className={styles.res_Title}>MP3</h2>
                     <div className={styles.ress}>
-                        <Link href={URL_MP3} id="MP3">
+                        <Link href={URL_MP3} id='MP3'>
                             <p className={`${styles.res_P} bg-[yellow]`}>click to download MP3</p>
                         </Link>
-                        <Image src="/copyIcon.png" alt="copy" width={55} height={55} onClick={CopyElement_MP3} />
+                        <Image src='/copyIcon.png' alt='copy' width={55} height={55} onClick={CopyElement_MP3} />
                     </div>
-                    <Link href="/" className={styles.backButton} onClick={() => setInput(true)}>
+                    <Link href='/' className={styles.backButton} onClick={() => setInput(true)}>
                         Back
                     </Link>
                 </>
@@ -88,7 +86,7 @@ export default function Home(): JSX.Element {
     return (
         <>
             <Heder />
-            <main className="flex items-center flex-col h-full mt-[70px]" style={{ color: 'black' }}>
+            <main className='flex items-center flex-col h-full mt-[70px]' style={{ color: 'black' }}>
                 {isLoading ? <p>Loading...</p> : <InputForm />}
             </main>
         </>
