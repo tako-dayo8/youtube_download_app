@@ -40,7 +40,6 @@ jobs:
               with:
                 tags: ${{ secrets.SERVER_HOST }}/web:latest
                 context: web
-                push: false
                 cache-from: type=local,src=/tmp/.buildx-cache-web
                 cache-to: type=local,dest=/tmp/.buildx-cache-new-web
 
@@ -48,7 +47,6 @@ jobs:
               with:
                 tags: ${{ secrets.SERVER_HOST }}/api:latest
                 context: api
-                push: false
                 cache-from: type=local,src=/tmp/.buildx-cache-api
                 cache-to: type=local,dest=/tmp/.buildx-cache-new-api
 
