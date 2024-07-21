@@ -40,6 +40,15 @@ jobs:
               run: |
                   docker-compose build
 
+            - name: test docker-compose
+              shell: bash
+              run: |
+                  docker network create database
+                  docker-compose -f docker-compose.server.yml up -d
+                  docker-compose -f docker-compose.server.yml ps
+                  docker-compose -f docker-compose.server.yml logs
+                  docker-compose -f docker-compose.server.yml down
+
             - name: compose push
               shell: bash
               run: |
