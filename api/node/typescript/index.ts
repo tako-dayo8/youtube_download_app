@@ -234,10 +234,15 @@ app.post('/', async (req: Request, res: Response) => {
         const tenHoursLater = new Date(now.getTime() + 10 * 60 * 60 * 1000);
         log.Tarminal('INFO', `削除時間: ${toMysqlFormat(tenHoursLater)}`);
 
-        // ダウンロードした動画情報をdatabeseに保存
-        await db.Conect(`INSERT INTO files (name , existences) VALUES ('${video_title}' , ${true})`);
-        // ダウンロードした時間情報をdatabeseに保存
-        await db.Conect(`INSERT INTO times (download_at , remove_at) VALUES ('${toMysqlFormat(now)}' , '${toMysqlFormat(tenHoursLater)}')`);
+        try {
+            // ダウンロードした動画情報をdatabeseに保存
+            await db.Conect(`INSERT INTO files (name , existences) VALUES ('${video_title}' , ${true})`);
+            // ダウンロードした時間情報をdatabeseに保存
+            await db.Conect(`INSERT INTO times (download_at , remove_at) VALUES ('${toMysqlFormat(now)}' , '${toMysqlFormat(tenHoursLater)}')`);
+        } catch (e : any) {
+            log.Tarminal('ERROR', `Error : ${e}`);
+            log.System('ERROR', `Error : ${e}`);
+        }
 
         //成功レスポンス
         res.status(200).json(res_data);
