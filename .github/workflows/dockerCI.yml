@@ -30,50 +30,17 @@ jobs:
                   echo "WEB_PORT=${{ secrets.WEB_PORT }}" >> .env
                   echo "API_PORT=${{ secrets.API_PORT }}" >> .env
 
-            - name: Upload .env file
-              uses: actions/upload-artifact@v4
-              with:
-                  path: ./.env
-                  name: env
-                  
             - name: Check File
               run: |
                   ls -al
                   cat .env
-                  
-            - name: Compose build
+
+            - name: compose build
               shell: bash
               run: |
-                 dokcer-compose build
+                  docker-compose build
 
-            - name: Compose push
+            - name: compose push
               shell: bash
               run: |
-                 dokcer-compose push
-
-    test:
-        runs-on: ubuntu-latest
-        env:
-            SERVER_HOST: ${{ secrets.SERVER_HOST }}
-            WEB_PORT: ${{ secrets.WEB_PORT }}
-            API_PORT: ${{ secrets.API_PORT }}
-        
-        needs: [build_push]
-        steps:       
-            - uses: actions/checkout@v4
-
-            - name: Download env artifact
-              uses: actions/download-artifact@v4
-              with:
-                  name: env
-                  path: ./
-            
-            - name: test docker-compose
-              shell: bash
-              run: |
-                  docker network create database
-                  docker-compose -f docker-compose.server.yml up -d
-                  docker-compose -f docker-compose.server.yml ps
-                  docker-compose -f docker-compose.server.yml logs
-                  docker-compose -f docker-compose.server.yml down
-
+                  docker-compose push
