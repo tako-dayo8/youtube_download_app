@@ -1,7 +1,6 @@
 version: '3.9'
 services:
     web:
-        build: ./web
         image: ${SERVER_HOST}/web:latest
         container_name: web
         env_file:
@@ -11,7 +10,6 @@ services:
         ports:
             - ${WEB_PORT}:${WEB_PORT}
     api:
-        build: ./api
         image: ${SERVER_HOST}/api:latest
         container_name: api
         cpus: 0.7
