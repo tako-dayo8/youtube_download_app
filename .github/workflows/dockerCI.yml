@@ -30,8 +30,10 @@ jobs:
                   echo "WEB_PORT=${{ secrets.WEB_PORT }}" >> .env
                   echo "API_PORT=${{ secrets.API_PORT }}" >> .env
 
-            - name: Check File list
-              run: ls -al
+            - name: Check File
+              run: |
+                  ls -al
+                  cat .env
 
             - name: compose build
               shell: bash
