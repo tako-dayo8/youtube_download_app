@@ -35,21 +35,21 @@ jobs:
                   ls -al
                   cat .env
                   
-            - uses: docker/setup-buildx-action@v2
+            - uses: docker/setup-buildx-action@v6.4.1
 
             - name:  build web
             - uses: docker/build-push-action@v4
               with:
-                image_name: ${{ secrets.SERVER_HOST }}/web:latest
+                tags: ${{ secrets.SERVER_HOST }}/web:latest
                 context: web
                 push: false
                 cache-from: type=local,src=/tmp/.buildx-cache-web
                 cache-to: type=local,dest=/tmp/.buildx-cache-new-web
 
             - name:  build api
-            - uses: docker/build-push-action@v4
+            - uses: docker/build-push-action@v6.4.1
               with:
-                image_name: ${{ secrets.SERVER_HOST }}/api:latest
+                tags: ${{ secrets.SERVER_HOST }}/api:latest
                 context: api
                 push: false
                 cache-from: type=local,src=/tmp/.buildx-cache-api
