@@ -10,15 +10,7 @@ jobs:
     build_push:
         runs-on: ubuntu-latest
         env:
-            NODE_ENV: production
             SERVER_HOST: ${{ secrets.SERVER_HOST }}
-            MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
-            MYSQL_ROOT_HOST: ${{ secrets.MYSQL_ROOT_HOST }}
-            MYSQL_HOST: ${{ secrets.MYSQL_HOST }}
-            MYSQL_DATABASE: ${{ secrets.MYSQL_DATABASE }}
-            MYSQL_USER: ${{ secrets.MYSQL_USER }}
-            MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
-            MYSQL_TCP_PORT: ${{ secrets.MYSQL_TCP_PORT }}
             WEB_PORT: ${{ secrets.WEB_PORT }}
             API_PORT: ${{ secrets.API_PORT }}
         steps:
