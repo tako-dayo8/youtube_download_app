@@ -41,23 +41,15 @@ jobs:
                   ls -al
                   cat .env
                   
-            - uses: docker/setup-buildx-action@v3.4.0
+            - name: Compose build
+              shell: bash
+              run: |
+                 dokcer-compose build
 
-            - uses: docker/build-push-action@v6.4.1
-              with:
-                tags: ${{ secrets.SERVER_HOST }}/web:latest
-                push: true
-                context: web
-                cache-from: type=local,src=/tmp/.buildx-cache-web
-                cache-to: type=local,dest=/tmp/.buildx-cache-new-web
-
-            - uses: docker/build-push-action@v6.4.1
-              with:
-                tags: ${{ secrets.SERVER_HOST }}/api:latest
-                push: true
-                context: api
-                cache-from: type=local,src=/tmp/.buildx-cache-api
-                cache-to: type=local,dest=/tmp/.buildx-cache-new-api
+            - name: Compose push
+              shell: bash
+              run: |
+                 dokcer-compose push
 
     test:
         runs-on: ubuntu-latest
