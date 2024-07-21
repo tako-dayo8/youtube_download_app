@@ -29,6 +29,13 @@ jobs:
                   echo "MYSQL_TCP_PORT=${{ secrets.MYSQL_TCP_PORT }}" >> .env
                   echo "WEB_PORT=${{ secrets.WEB_PORT }}" >> .env
                   echo "API_PORT=${{ secrets.API_PORT }}" >> .env
+
+            - name: Upload .env file
+              uses: actions/upload-artifact@v4
+              with:
+                  path: ./.env
+                  name: env
+                  
             - name: Check File
               run: |
                   ls -al
@@ -39,6 +46,7 @@ jobs:
             - uses: docker/build-push-action@v6.4.1
               with:
                 tags: ${{ secrets.SERVER_HOST }}/web:latest
+                push: true
                 context: web
                 cache-from: type=local,src=/tmp/.buildx-cache-web
                 cache-to: type=local,dest=/tmp/.buildx-cache-new-web
@@ -46,15 +54,28 @@ jobs:
             - uses: docker/build-push-action@v6.4.1
               with:
                 tags: ${{ secrets.SERVER_HOST }}/api:latest
+                push: true
                 context: api
                 cache-from: type=local,src=/tmp/.buildx-cache-api
                 cache-to: type=local,dest=/tmp/.buildx-cache-new-api
 
     test:
         runs-on: ubuntu-latest
+        env:
+            SERVER_HOST: ${{ secrets.SERVER_HOST }}
+            WEB_PORT: ${{ secrets.WEB_PORT }}
+            API_PORT: ${{ secrets.API_PORT }}
+        
         needs: [build_push]
-        steps:
+        steps:       
             - uses: actions/checkout@v4
+
+            - name: Download env artifact
+              uses: actions/download-artifact@v4
+              with:
+                  name: env
+                  path: ./
+            
             - name: test docker-compose
               shell: bash
               run: |
