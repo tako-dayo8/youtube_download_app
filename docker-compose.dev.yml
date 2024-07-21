@@ -6,6 +6,8 @@ services:
             dockerfile: ./Dockerfile.dev
         image: web:dev
         container_name: web
+        env_file:
+            - .env
         tty: true # debug
         depends_on:
             - api
@@ -19,34 +21,19 @@ services:
             dockerfile: ./Dockerfile.dev
         image: api:dev
         container_name: api
+        entrypoint: /bin/bash
+        env_file:
+            - .env
         tty: true # debug
         cpus: 0.7
-        environment:
-            NODE_ENV: ${NODE_ENV}
-            MYSQL_HOST: ${MYSQL_HOST}
-            MYSQL_DATABASE: ${MYSQL_DATABASE}
-            MYSQL_USER: ${MYSQL_USER}
-            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-            MYSQL_TCP_PORT: ${MYSQL_TCP_PORT}
         volumes:
             - ./api/node:/api:rw # debug
-        depends_on:
-            - db
         ports:
             - ${API_PORT}:${API_PORT}
-    db:
-        image: mysql:lts
-        container_name: db
-        environment:
-            TZ: Asia/Tokyo
-            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-            MYSQL_DATABASE: ${MYSQL_DATABASE}
-            MYSQL_ROOT_HOST: ${MYSQL_ROOT_HOST}
-            MYSQL_USER: ${MYSQL_USER}
-            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-            MYSQL_TCP_PORT: ${MYSQL_TCP_PORT}
-        volumes:
-            - ./db/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
-            - ./db/conf.d:/etc/mysql/conf.d
-        ports:
-            - ${MYSQL_TCP_PORT}:${MYSQL_TCP_PORT}
+        networks:
+            - database
+
+networks:
+    database:
+        name: database
+        external: true

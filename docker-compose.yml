@@ -1,11 +1,11 @@
-version: '3.8'
+version: '3.9'
 services:
     web:
         build: ./web
         image: ${SERVER_HOST}/web:latest
         container_name: web
-        environment:
-            NODE_ENV: ${NODE_ENV}
+        env_file:
+            - .env
         depends_on:
             - api
         ports:
@@ -15,36 +15,18 @@ services:
         image: ${SERVER_HOST}/api:latest
         container_name: api
         cpus: 0.7
-        environment:
-            NODE_ENV: ${NODE_ENV}
-            MYSQL_HOST: ${MYSQL_HOST}
-            MYSQL_DATABASE: ${MYSQL_DATABASE}
-            MYSQL_USER: ${MYSQL_USER}
-            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-            MYSQL_TCP_PORT: ${MYSQL_TCP_PORT}
+        env_file:
+            - .env
         volumes:
             - ./api/audios:/api/audios:rw
             - ./api/logs:/api/logs:rw
             - ./api/logs_ald:/api/logs_ald:rw
-        depends_on:
-            - db
         ports:
             - ${API_PORT}:${API_PORT}
-    db:
-        image: mysql:lts
-        container_name: db
-        environment:
-            TZ: Asia/Tokyo
-            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-            MYSQL_DATABASE: ${MYSQL_DATABASE}
-            MYSQL_ROOT_HOST: ${MYSQL_ROOT_HOST}
-            MYSQL_USER: ${MYSQL_USER}
-            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-            MYSQL_TCP_PORT: ${MYSQL_TCP_PORT}
-        volumes:
-            - ./db/sql:/var/lib/mysql:rw
-            - ./db/log:/var/log/mysql:rw
-            - ./db/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d:ro
-            - ./db/conf.d:/etc/mysql/conf.d:ro
-        ports:
-            - ${MYSQL_TCP_PORT}:${MYSQL_TCP_PORT}
+        networks:
+            - database
+
+networks:
+    database:
+        name: database
+        external: true

@@ -16,26 +16,11 @@ services:
             - ./api/audios:/api/audios:rw
             - ./api/logs:/api/logs:rw
             - ./api/logs_ald:/api/logs_ald:rw
-        depends_on:
-            - db
         ports:
             - ${API_PORT}:${API_PORT}
-    db:
-        image: mysql:lts
-        container_name: db
-        restart: always
-        environment:
-            TZ: Asia/Tokyo
-            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-            MYSQL_DATABASE: ${MYSQL_DATABASE}
-            MYSQL_ROOT_HOST: ${MYSQL_ROOT_HOST}
-            MYSQL_USER: ${MYSQL_USER}
-            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-            MYSQL_TCP_PORT: ${MYSQL_TCP_PORT}
-        volumes:
-            - ./db/sql:/var/lib/mysql:rw
-            - ./db/log:/var/log/mysql:rw
-            - ./db/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d:ro
-            - ./db/conf.d:/etc/mysql/conf.d:ro
-        ports:
-            - ${MYSQL_TCP_PORT}:${MYSQL_TCP_PORT}
+        networks:
+            - databese
+networks:
+    database:
+        name: database
+        external: true
