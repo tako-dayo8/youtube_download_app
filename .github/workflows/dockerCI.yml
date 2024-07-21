@@ -52,10 +52,11 @@ jobs:
                 cache-from: type=local,src=/tmp/.buildx-cache-api
                 cache-to: type=local,dest=/tmp/.buildx-cache-new-api
 
-            - name: compose build
-              shell: bash
-              run: |
-                docker-compose build
+    test:
+        runs-on: ubuntu-latest
+        needs: [build_push]
+        steps:
+            - uses: actions/checkout@v4
             - name: test docker-compose
               shell: bash
               run: |
@@ -64,7 +65,4 @@ jobs:
                   docker-compose -f docker-compose.server.yml ps
                   docker-compose -f docker-compose.server.yml logs
                   docker-compose -f docker-compose.server.yml down
-            - name: compose push
-              shell: bash
-              run: |
-                  docker-compose push
+
