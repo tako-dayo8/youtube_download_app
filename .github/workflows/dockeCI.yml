@@ -1,0 +1,72 @@
+name: docker-compose CI
+
+on:
+    workflow_dispatch:
+    pull_request:
+        branches: [main]
+        types: [closed, synchronize]
+
+jobs:
+    build_push:
+        runs-on: ubuntu-latest
+        env:
+            SERVER_HOST: ${{ secrets.SERVER_HOST }}
+            WEB_PORT: ${{ secrets.WEB_PORT }}
+            API_PORT: ${{ secrets.API_PORT }}
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Create .env file
+              run: |
+                  echo "NODE_ENV=production" >> .env
+                  echo "SERVER_HOST=${{ secrets.SERVER_HOST }}" >> .env
+                  echo "MYSQL_ROOT_PASSWORD=${{ secrets.MYSQL_ROOT_PASSWORD }}" >> .env
+                  echo "MYSQL_ROOT_HOST=${{ secrets.MYSQL_ROOT_HOST }}" >> .env
+                  echo "MYSQL_HOST=${{ secrets.MYSQL_HOST }}" >> .env
+                  echo "MYSQL_DATABASE=${{ secrets.MYSQL_DATABASE }}" >> .env
+                  echo "MYSQL_USER=${{ secrets.MYSQL_USER }}" >> .env
+                  echo "MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }}" >> .env
+                  echo "MYSQL_TCP_PORT=${{ secrets.MYSQL_TCP_PORT }}" >> .env
+                  echo "WEB_PORT=${{ secrets.WEB_PORT }}" >> .env
+                  echo "API_PORT=${{ secrets.API_PORT }}" >> .env
+            - name: Check File
+              run: |
+                  ls -al
+                  cat .env
+                  
+            - uses: docker/setup-buildx-action@v3.4.0
+
+            - name:  build web
+            - uses: docker/build-push-action@v6.4.1
+              with:
+                tags: ${{ secrets.SERVER_HOST }}/web:latest
+                context: web
+                push: false
+                cache-from: type=local,src=/tmp/.buildx-cache-web
+                cache-to: type=local,dest=/tmp/.buildx-cache-new-web
+
+            - name:  build api
+            - uses: docker/build-push-action@v6.4.1
+              with:
+                tags: ${{ secrets.SERVER_HOST }}/api:latest
+                context: api
+                push: false
+                cache-from: type=local,src=/tmp/.buildx-cache-api
+                cache-to: type=local,dest=/tmp/.buildx-cache-new-api
+
+            - name: compose build
+              shell: bash
+              run: |
+                docker-compose build
+            - name: test docker-compose
+              shell: bash
+              run: |
+                  docker network create database
+                  docker-compose -f docker-compose.server.yml up -d
+                  docker-compose -f docker-compose.server.yml ps
+                  docker-compose -f docker-compose.server.yml logs
+                  docker-compose -f docker-compose.server.yml down
+            - name: compose push
+              shell: bash
+              run: |
+                  docker-compose push
