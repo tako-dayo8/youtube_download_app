@@ -3,7 +3,6 @@ services:
     web:
         image: ${SERVER_HOST}/web:latest
         container_name: web
-        restart: always
         depends_on:
             - api
         ports:
@@ -11,7 +10,6 @@ services:
     api:
         image: ${SERVER_HOST}/api:latest
         container_name: api
-        restart: always
         volumes:
             - ./api/audios:/api/audios:rw
             - ./api/logs:/api/logs:rw
