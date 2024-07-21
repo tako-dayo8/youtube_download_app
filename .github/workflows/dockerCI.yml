@@ -18,7 +18,7 @@ jobs:
 
             - name: Create .env file
               run: |
-                  echo "NODE_ENV=production" > .env
+                  echo "NODE_ENV=production" >> .env
                   echo "SERVER_HOST=${{ secrets.SERVER_HOST }}" >> .env
                   echo "MYSQL_ROOT_PASSWORD=${{ secrets.MYSQL_ROOT_PASSWORD }}" >> .env
                   echo "MYSQL_ROOT_HOST=${{ secrets.MYSQL_ROOT_HOST }}" >> .env
