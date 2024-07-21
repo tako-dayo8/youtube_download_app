@@ -1,35 +1,52 @@
 name: docker-compose CI
 
 on:
-  workflow_dispatch:
-  pull_request:
-      branches: [ main ] 
-      types : [ closed , synchronize]
+    workflow_dispatch:
+    pull_request:
+        branches: [main]
+        types: [closed, synchronize]
 
 jobs:
-  build_push:
-    runs-on: ubuntu-latest
-    env:
-        NODE_ENV: production
-        SERVER_HOST: ${{ secrets.SERVER_HOST }}
-        MYSQL_ROOT_PASSWORD : ${{ secrets.MYSQL_ROOT_PASSWORD }}
-        MYSQL_ROOT_HOST: ${{ secrets.MYSQL_ROOT_HOST }}
-        MYSQL_HOST: ${{ secrets.MYSQL_HOST }}
-        MYSQL_DATABASE: ${{ secrets.MYSQL_DATABASE }}
-        MYSQL_USER: ${{ secrets.MYSQL_USER }}
-        MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
-        MYSQL_TCP_PORT: ${{ secrets.MYSQL_TCP_PORT }}
-        WEB_PORT: ${{ secrets.WEB_PORT }}
-        API_PORT: ${{ secrets.API_PORT }}
-    steps:
-      - uses: actions/checkout@v4
+    build_push:
+        runs-on: ubuntu-latest
+        env:
+            NODE_ENV: production
+            SERVER_HOST: ${{ secrets.SERVER_HOST }}
+            MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+            MYSQL_ROOT_HOST: ${{ secrets.MYSQL_ROOT_HOST }}
+            MYSQL_HOST: ${{ secrets.MYSQL_HOST }}
+            MYSQL_DATABASE: ${{ secrets.MYSQL_DATABASE }}
+            MYSQL_USER: ${{ secrets.MYSQL_USER }}
+            MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+            MYSQL_TCP_PORT: ${{ secrets.MYSQL_TCP_PORT }}
+            WEB_PORT: ${{ secrets.WEB_PORT }}
+            API_PORT: ${{ secrets.API_PORT }}
+        steps:
+            - uses: actions/checkout@v4
 
-      - name: compose build
-        shell: bash
-        run: |
-          docker-compose -f docker-compose.yml build
+            - name: Create .env file
+              run: |
+                  echo "NODE_ENV=production" > .env
+                  echo "SERVER_HOST=${{ secrets.SERVER_HOST }}" >> .env
+                  echo "MYSQL_ROOT_PASSWORD=${{ secrets.MYSQL_ROOT_PASSWORD }}" >> .env
+                  echo "MYSQL_ROOT_HOST=${{ secrets.MYSQL_ROOT_HOST }}" >> .env
+                  echo "MYSQL_HOST=${{ secrets.MYSQL_HOST }}" >> .env
+                  echo "MYSQL_DATABASE=${{ secrets.MYSQL_DATABASE }}" >> .env
+                  echo "MYSQL_USER=${{ secrets.MYSQL_USER }}" >> .env
+                  echo "MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }}" >> .env
+                  echo "MYSQL_TCP_PORT=${{ secrets.MYSQL_TCP_PORT }}" >> .env
+                  echo "WEB_PORT=${{ secrets.WEB_PORT }}" >> .env
+                  echo "API_PORT=${{ secrets.API_PORT }}" >> .env
 
-      - name: compose push
-        shell: bash
-        run: |
-          docker-compose -f docker-compose.yml push
+            - name: Check File list
+              run: ls -al
+
+            - name: compose build
+              shell: bash
+              run: |
+                  docker-compose build
+
+            - name: compose push
+              shell: bash
+              run: |
+                  docker-compose push
