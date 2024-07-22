@@ -38,7 +38,7 @@ jobs:
               with:
                   context: api
                   push: true
-                  tags: ${{ secrets.SERVER_HOST }}/api:latest
+                  tags: ghcr.io/${{ github.actor }}/api:latest
                   cache-from: type=gha
                   cache-to: type=gha,mode=max
 
@@ -47,6 +47,6 @@ jobs:
               with:
                   context: web
                   push: true
-                  tags: ${{ secrets.SERVER_HOST }}/web:latest
+                  tags: ghcr.io/${{ github.actor }}/web:latest
                   cache-from: type=gha
                   cache-to: type=gha,mode=max
