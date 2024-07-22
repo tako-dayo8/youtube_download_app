@@ -38,7 +38,7 @@ jobs:
             - name: compose build
               shell: bash
               run: |
-                  docker-compose build
+                  docker-compose --env-file ./.env build
 
             - name: compose push
               shell: bash
