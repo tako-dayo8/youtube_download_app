@@ -35,12 +35,20 @@ jobs:
                   ls -al
                   cat .env
 
-            - name: compose build
-              shell: bash
-              run: |
-                  docker-compose --env-file ./.env build
+            - name: Build and push Docker image api
+              uses: docker/build-push-action@v6
+              with:
+                context: api
+                push: true
+                tags: ${{ secrets.SERVER_HOST }}/api:latest
+                cache-from: type=gha
+                cache-to: type=gha,mode=max
 
-            - name: compose push
-              shell: bash
-              run: |
-                  docker-compose push
+            - name: Build and push Docker image web
+              uses: docker/build-push-action@v6
+              with:
+                context: web
+                push: true
+                tags: ${{ secrets.SERVER_HOST }}/web:latest
+                cache-from: type=gha
+                cache-to: type=gha,mode=max
