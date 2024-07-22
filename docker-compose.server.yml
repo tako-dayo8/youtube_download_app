@@ -3,6 +3,8 @@ services:
     web:
         image: ${SERVER_HOST}/web:latest
         container_name: web
+        env_file:
+            - .env
         depends_on:
             - api
         ports:
@@ -10,6 +12,8 @@ services:
     api:
         image: ${SERVER_HOST}/api:latest
         container_name: api
+        env_file:
+            - .env
         volumes:
             - ./api/audios:/api/audios:rw
             - ./api/logs:/api/logs:rw
