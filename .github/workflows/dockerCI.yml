@@ -13,45 +13,36 @@ jobs:
             SERVER_HOST: ${{ secrets.SERVER_HOST }}
             WEB_PORT: ${{ secrets.WEB_PORT }}
             API_PORT: ${{ secrets.API_PORT }}
+            MYSQL_HOST: ${{ secrets.MYSQL_HOST }}
+            MYSQL_DATABASE: ${{ secrets.MYSQL_DATABASE }}
+            MYSQL_USER: ${{ secrets.MYSQL_USER }}
+            MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+            MYSQL_TCP_PORT: ${{ secrets.MYSQL_TCP_PORT }}
         steps:
             - uses: actions/checkout@v4
-
-            - name: Create .env file
-              run: |
-                  echo "NODE_ENV=production" >> .env
-                  echo "SERVER_HOST=${{ secrets.SERVER_HOST }}" >> .env
-                  echo "MYSQL_ROOT_PASSWORD=${{ secrets.MYSQL_ROOT_PASSWORD }}" >> .env
-                  echo "MYSQL_ROOT_HOST=${{ secrets.MYSQL_ROOT_HOST }}" >> .env
-                  echo "MYSQL_HOST=${{ secrets.MYSQL_HOST }}" >> .env
-                  echo "MYSQL_DATABASE=${{ secrets.MYSQL_DATABASE }}" >> .env
-                  echo "MYSQL_USER=${{ secrets.MYSQL_USER }}" >> .env
-                  echo "MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }}" >> .env
-                  echo "MYSQL_TCP_PORT=${{ secrets.MYSQL_TCP_PORT }}" >> .env
-                  echo "WEB_PORT=${{ secrets.WEB_PORT }}" >> .env
-                  echo "API_PORT=${{ secrets.API_PORT }}" >> .env
 
             - name: Check File
               run: |
                   ls -al
                   cat .env
-                  
+
             - name: Docker Setup Buildx
               uses: docker/setup-buildx-action@v3
- 
+
             - name: Build and push Docker image api
               uses: docker/build-push-action@v6
               with:
-                context: api
-                push: true
-                tags: ${{ secrets.SERVER_HOST }}/api:latest
-                cache-from: type=gha
-                cache-to: type=gha,mode=max
+                  context: api
+                  push: true
+                  tags: ${{ secrets.SERVER_HOST }}/api:latest
+                  cache-from: type=gha
+                  cache-to: type=gha,mode=max
 
             - name: Build and push Docker image web
               uses: docker/build-push-action@v6
               with:
-                context: web
-                push: true
-                tags: ${{ secrets.SERVER_HOST }}/web:latest
-                cache-from: type=gha
-                cache-to: type=gha,mode=max
+                  context: web
+                  push: true
+                  tags: ${{ secrets.SERVER_HOST }}/web:latest
+                  cache-from: type=gha
+                  cache-to: type=gha,mode=max

@@ -4,8 +4,8 @@ services:
         build: ./web
         image: ${SERVER_HOST}/web:latest
         container_name: web
-        env_file:
-            - .env
+        environment:
+            - NODE_ENV=production
         depends_on:
             - api
         ports:
@@ -13,10 +13,15 @@ services:
     api:
         build: ./api
         image: ${SERVER_HOST}/api:latest
+        environment:
+            - NODE_ENV=production
+            - MYSQL_HOST=${MYSQL_HOST}
+            - MYSQL_DATABASE=${MYSQL_DATABASE}
+            - MYSQL_USER=${MYSQL_USER}
+            - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+            - MYSQL_TCP_PORT=${MYSQL_TCP_PORT}
         container_name: api
         cpus: 0.7
-        env_file:
-            - .env
         volumes:
             - ./api/audios:/api/audios:rw
             - ./api/logs:/api/logs:rw
