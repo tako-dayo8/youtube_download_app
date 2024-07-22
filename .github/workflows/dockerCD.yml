@@ -10,6 +10,12 @@ jobs:
   ssh_pull:
     runs-on: ubuntu-latest
     steps:
+        - name: Make fail if the previous workflow was failed
+          if: ${{ github.event.workflow_run.conclusion != 'success' }}
+          run: |
+            echo '::error::Previous workflow was failed'
+            exit 1
+            
         - name: SSH Conect
           uses: appleboy/ssh-action@v1.0.3
           with:
