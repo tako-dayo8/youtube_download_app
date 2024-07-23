@@ -25,7 +25,7 @@ try {
 
     removes.forEach(async (remove: getData) => {
         const file_path = path.join(audio_path, remove.name, '.mp3');
-        fs.rmSync(file_path);
+        fs.unlinkSync(file_path);
         try {
             await db.Conect(`UPDATE files SET existences = FALSE WHERE name = ${remove.name}`);
         } catch (e: any) {
