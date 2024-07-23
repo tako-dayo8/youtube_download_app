@@ -5,9 +5,9 @@
     "main": "src/index.ts",
     "type": "module",
     "scripts": {
-        "start": "node build/index.js && node build/core.js",
+        "start": "node build/index.js & node build/cron.js",
         "build": "node build.js",
-        "dev": "nodemon typescript/index.ts",
+        "dev": "nodemon typescript/index.ts & nodemon typescript/cron.ts",
         "remove": "node build/fileRemove.js"
     },
     "author": "",
