@@ -6,7 +6,7 @@ class database {
 
     constructor() {
         console.log('MYSQL_HOST:', process.env.MYSQL_HOST , "\n" , 'MYSQL_USER:', process.env.MYSQL_USER , "\n" , 'MYSQL_PASSWORD:', process.env.MYSQL_PASSWORD , "\n" , 'MYSQL_DATABASE:', process.env.MYSQL_DATABASE , "\n" , 'MYSQL_TCP_PORT:', process.env.MYSQL_TCP_PORT);
-        log.System("INFO",'MYSQL_HOST:' + process.env.MYSQL_HOST + "\n" + 'MYSQL_USER:' + process.env.MYSQL_USER + "\n" + 'MYSQL_PASSWORD:' + process.env.MYSQL_PASSWORD + "\n" + 'MYSQL_DATABASE:' + process.env.MYSQL_DATABASE + "\n" + 'MYSQL_TCP_PORT:' + process.env.MYSQL_TCP_PORT);
+        log.System("INFO","\n" + 'MYSQL_HOST:' + process.env.MYSQL_HOST + "\n" + 'MYSQL_USER:' + process.env.MYSQL_USER + "\n" + 'MYSQL_PASSWORD:' + process.env.MYSQL_PASSWORD + "\n" + 'MYSQL_DATABASE:' + process.env.MYSQL_DATABASE + "\n" + 'MYSQL_TCP_PORT:' + process.env.MYSQL_TCP_PORT);
 
         this.pool = mysql.createPool({
             host: process.env.MYSQL_HOST,
