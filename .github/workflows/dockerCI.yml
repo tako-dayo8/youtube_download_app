@@ -28,7 +28,7 @@ jobs:
               id: is_pull_request
               run: |
                    echo "is_pull_request=${{ github.event_name == 'pull_request' }}">> $GITHUB_ENV
-                   echo "${{ github.event_name == 'pull_request' }}"
+                   echo "${{ env.is_pull_request }}"
 
             - name: Check Changed Dir
               if: env.is_pull_request == 'true' 
