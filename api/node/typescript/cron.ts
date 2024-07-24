@@ -1,6 +1,6 @@
 import cron from "node-cron"
 import log, { LogZip } from "./log.js"
-import { execSync } from "child_process"
+import runFileRemove from "./fileRemove.js"
 
 
 cron.schedule("0 0 * * *" , async () => {
@@ -11,7 +11,7 @@ cron.schedule("0 0 * * *" , async () => {
 
 cron.schedule("0 * * * *" , () => {
     log.Tarminal("INFO" , "--- file remove Start ---")
-    execSync("npm run remove")
+    runFileRemove()
     log.Tarminal("INFO" , "--- file remove End ---")
 })
 
