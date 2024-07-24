@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import './styles/globals.css';
 import styles from './styles/MainHome.module.css';
+import Loader from './components/loader';
 
 export default function Home(): JSX.Element {
     const ref = useRef<HTMLInputElement>(null);
@@ -87,7 +88,13 @@ export default function Home(): JSX.Element {
         <>
             <Heder />
             <main className='flex items-center flex-col h-full mt-[70px]' style={{ color: 'black' }}>
-                {isLoading ? <p>Loading...</p> : <InputForm />}
+                {isLoading ? (
+                    <>
+                        <Loader />
+                        <br />
+                        <p>Loading...</p>
+                    </>
+                    ) : <InputForm />}
             </main>
         </>
     );
