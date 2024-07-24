@@ -26,10 +26,15 @@ export interface DateTime {
 type LogType = 'EMERG' | 'ALERT' | 'CRIT' | 'ERROR' | 'WARN' | 'NOTICE' | 'INFO' | 'DEBUG';
 
 export default class log {
-    static Reqest(type: LogType, method: string, status: number, ip: string, ...message: any[]) {
+    static Reqest(type: LogType, method: string, status: number, ip: string, ...message: any | any[]) {
         if (!fs.existsSync(`/api/logs`)) {
             fs.mkdirSync(`/api/logs`);
         }
+        if (Array.isArray(message)) {
+            // 配列の場合は空白で結合
+            message = message.join(' ');
+        }
+
 
         let id = 1;
 
@@ -53,10 +58,15 @@ export default class log {
         }
     }
 
-    static System(type: LogType, message: any) {
+    static System(type: LogType, ...message: any | any[]) {
         if (!fs.existsSync(`/api/logs`)) {
             fs.mkdirSync(`/api/logs`);
         }
+        if (Array.isArray(message)) {
+            // 配列の場合は空白で結合
+            message = message.join(' ');
+        }
+
 
         let id = 1;
 
@@ -80,12 +90,16 @@ export default class log {
         }
     }
 
-    static Tarminal(type: LogType, message: any) {
+    static Tarminal(type: LogType, ...message: any | any[]) {
         if (!fs.existsSync(`/api/logs`)) {
             fs.mkdirSync(`/api/logs`);
         }
+        if (Array.isArray(message)) {
+            // 配列の場合は空白で結合
+            message = message.join(' ');
+        }
 
-        const putMessage = `[${getDateTime().str}] [${type}] ` + message.replace(/\n/g, '');
+        const putMessage = `[${getDateTime().str}] [${type}] ` +  message;
 
         switch (type) {
             case 'EMERG':
@@ -181,7 +195,7 @@ export async function LogZip() {
     output.on('close', function () {
         // zip圧縮完了すると発火する
         const archive_size = archive.pointer();
-        console.log(`complete! mcaddon total size : ${archive_size} bytes`);
+        console.log(`complete! logs total size : ${archive_size} bytes`);
         fs.readdirSync(`/api/logs/`).forEach((file) => {
             fs.rmSync(`/api/logs/${file}`, { recursive: true, force: true });
         });
