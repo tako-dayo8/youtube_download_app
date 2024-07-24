@@ -25,7 +25,7 @@ services:
         volumes:
             - ./api/audios:/api/audios:rw
             - ./api/logs:/api/logs:rw
-            - ./api/logs_ald:/api/logs_ald:rw
+            - ./api/logs_old:/api/logs_old:rw
         ports:
             - ${API_PORT}:${API_PORT}
         networks:

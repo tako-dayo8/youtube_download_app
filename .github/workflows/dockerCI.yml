@@ -3,7 +3,7 @@ name: docker-compose CI
 on:
     workflow_dispatch:
     pull_request:
-        paths: 
+        paths:
             - 'web/**'
             - 'api/**'
         branches: [main]
@@ -27,20 +27,20 @@ jobs:
             - name: is pull_request
               id: is_pull_request
               run: |
-                   echo "is_pull_request=${{ github.event_name == 'pull_request' }}">> $GITHUB_ENV
-                   echo "${{ env.is_pull_request }}"
+                  echo "is_pull_request=${{ github.event_name == 'pull_request' }}">> $GITHUB_ENV
+                  echo "${{ env.is_pull_request }}"
 
             - name: Check Changed Dir
-              if: env.is_pull_request == 'true' 
+              if: env.is_pull_request == 'true'
               uses: dorny/paths-filter@v3.0.2
               id: changes
               with:
-                  filers: |
+                  filters: |
                       api:
                         - 'api/**'
                       web:
                         - 'web/**'
-                      
+
             - name: Docker Login
               # You may pin to the exact commit or the version.
               # uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567
@@ -55,7 +55,7 @@ jobs:
               uses: docker/setup-buildx-action@v3
 
             - name: Build and push Docker image api
-              if: steps.changes.outputs.api == 'true' || env.is_pull_request != 'true' 
+              if: steps.changes.outputs.api == 'true' || env.is_pull_request != 'true'
               uses: docker/build-push-action@v6
               with:
                   context: api
@@ -65,7 +65,7 @@ jobs:
                   cache-to: type=gha,mode=max
 
             - name: Build and push Docker image web
-              if: steps.changes.outputs.web == 'true' || env.is_pull_request != 'true' 
+              if: steps.changes.outputs.web == 'true' || env.is_pull_request != 'true'
               uses: docker/build-push-action@v6
               with:
                   context: web
